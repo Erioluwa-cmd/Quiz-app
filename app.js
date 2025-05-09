@@ -250,7 +250,7 @@ function load_question(){
         
             get_selected_answer()
             let chosen_answer = userAnswers[current_question_index]
-        
+        clear.disabled = true
 
            if(chosen_answer){
                 document.getElementById(chosen_answer).checked = true
@@ -320,6 +320,7 @@ next_btn.addEventListener("click", show_next)
 prev_btn.addEventListener("click", show_prev)
 // logic to calculate total score
 function get_total_score(){
+            clearInterval(clear)
            let correct_answers = questions.map(function(question){
                      return question.correct
            })
@@ -366,7 +367,7 @@ function get_total_score(){
                 con.innerHTML = "try to read your book😒"
            }
 
-           clearInterval(clear)
+           
 
         //    alert(`your total score is ${total_score}`)
         //    let retake_quiz = confirm("retake quiz")
