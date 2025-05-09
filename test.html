@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Quiz App</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 700px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .option {
+            margin: 10px 0;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #reviewScreen,
+        #historyScreen,
+        #loginScreen {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #timer {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e91e63;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <div id="loginScreen">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Enter your name" />
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <div id="quiz" class="hidden">
+            <div id="timer"></div>
+            <div class="question" id="question"></div>
+            <div class="option"><input type="radio" name="answer" value="a" id="a"><label for="a" id="a_text"></label>
+            </div>
+            <div class="option"><input type="radio" name="answer" value="b" id="b"><label for="b" id="b_text"></label>
+            </div>
+            <div class="option"><input type="radio" name="answer" value="c" id="c"><label for="c" id="c_text"></label>
+            </div>
+            <div class="option"><input type="radio" name="answer" value="d" id="d"><label for="d" id="d_text"></label>
+            </div>
+
+            <div class="btn-group">
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="finishBtn" class="hidden">Finish</button>
+            </div>
+        </div>
+
+        <div id="result"></div>
+
+        <div id="reviewScreen" class="hidden">
+            <h2>Review Answers</h2>
+            <ul id="reviewList"></ul>
+            <canvas id="resultChart" width="300" height="300"></canvas>
+            <button onclick="downloadReview()">📸 Download Review</button>
+            <div id="shareSection" style="margin-top: 20px;">
+                <h3>📤 Share Your Score</h3>
+                <button onclick="shareToWhatsApp()">WhatsApp</button>
+                <button onclick="shareToFacebook()">Facebook</button>
+                <button onclick="shareToTwitter()">Twitter</button>
+            </div>
+            <hr>
+            <button onclick="viewHistory()">View Score History</button>
+        </div>
+
+        <div id="historyScreen" class="hidden">
+            <h2>Score History</h2>
+            <ul id="historyList"></ul>
+            <button onclick="clearHistory()">Clear History</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                a: "London",
+                b: "Berlin",
+                c: "Paris",
+                d: "Madrid",
+                correct: "c"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                a: "Earth",
+                b: "Mars",
+                c: "Jupiter",
+                d: "Venus",
+                correct: "b"
+            },
+            {
+                question: "Which language is used for web development?",
+                a: "Python",
+                b: "C++",
+                c: "HTML",
+                d: "Swift",
+                correct: "c"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let score = 0;
+        let timer;
+        let timeLeft = 60; // total time in seconds
+        let username = "";
+
+        const questionEl = document.getElementById("question");
+        const a_text = document.getElementById("a_text");
+        const b_text = document.getElementById("b_text");
+        const c_text = document.getElementById("c_text");
+        const d_text = document.getElementById("d_text");
+        const timerEl = document.getElementById("timer");
+
+        function startQuiz() {
+            const nameInput = document.getElementById("username").value.trim();
+            if (!nameInput) return alert("Enter your name");
+            username = nameInput;
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("quiz").classList.remove("hidden");
+            loadQuiz();
+            startTimer();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = `Time left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuiz() {
+            deselectAnswers();
+            const current = quizData[currentQuestion];
+            questionEl.textContent = current.question;
+            a_text.textContent = current.a;
+            b_text.textContent = current.b;
+            c_text.textContent = current.c;
+            d_text.textContent = current.d;
+
+            const saved = userAnswers[currentQuestion];
+            if (saved) document.getElementById(saved).checked = true;
+
+            document.getElementById("prevBtn").style.display = currentQuestion === 0 ? "none" : "inline-block";
+            document.getElementById("nextBtn").style.display = currentQuestion < quizData.length - 1 ? "inline-block" : "none";
+            document.getElementById("finishBtn").classList.toggle("hidden", currentQuestion !== quizData.length - 1);
+        }
+
+        function deselectAnswers() {
+            document.querySelectorAll('[name="answer"]').forEach(el => el.checked = false);
+        }
+
+        function getSelected() {
+            let selected = null;
+            document.querySelectorAll('[name="answer"]').forEach(el => {
+                if (el.checked) selected = el.value;
+            });
+            return selected;
+        }
+
+        document.getElementById("nextBtn").onclick = () => {
+            const answer = getSelected();
+            if (!answer) return alert("Select an answer");
+            userAnswers[currentQuestion] = answer;
+            currentQuestion++;
+            loadQuiz();
+        };
+
+        document.getElementById("prevBtn").onclick = () => {
+            userAnswers[currentQuestion] = getSelected();
+            if (currentQuestion > 0) currentQuestion--;
+            loadQuiz();
+        };
+
+        document.getElementById("finishBtn").onclick = finishQuiz;
+
+        function finishQuiz() {
+            clearInterval(timer);
+            const answer = getSelected();
+            if (answer) userAnswers[currentQuestion] = answer;
+
+            score = 0;
+            userAnswers.forEach((ans, i) => {
+                if (ans === quizData[i].correct) score++;
+            });
+
+            const percent = Math.round((score / quizData.length) * 100);
+            const result = {
+                name: username,
+                score,
+                total: quizData.length,
+                percent,
+                date: new Date().toLocaleString()
+            };
+            const history = JSON.parse(localStorage.getItem("quizScores") || "[]");
+            history.push(result);
+            localStorage.setItem("quizScores", JSON.stringify(history));
+
+            document.getElementById("quiz").classList.add("hidden");
+            document.getElementById("result").textContent = `${username}, you scored ${score}/${quizData.length} (${percent}%)`;
+            document.getElementById("reviewScreen").classList.remove("hidden");
+
+            showReview();
+            drawChart(score, quizData.length - score);
+        }
+
+        function showReview() {
+            const list = document.getElementById("reviewList");
+            list.innerHTML = "";
+            quizData.forEach((q, i) => {
+                const li = document.createElement("li");
+                li.innerHTML = `Q${i + 1}: ${q.question}<br>Your answer: <b style='color:${userAnswers[i] === q.correct ? 'green' : 'red'}'>${userAnswers[i]}</b><br>Correct: ${q.correct}`;
+                list.appendChild(li);
+            });
+        }
+
+        function drawChart(correct, incorrect) {
+            new Chart(document.getElementById("resultChart").getContext("2d"), {
+                type: 'pie',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [correct, incorrect],
+                        backgroundColor: ['#4CAF50', '#F44336']
+                    }]
+                },
+                options: { responsive: false }
+            });
+        }
+
+        function downloadReview() {
+            html2canvas(document.getElementById("reviewScreen")).then(canvas => {
+                const a = document.createElement("a");
+                a.download = "quiz-review.png";
+                a.href = canvas.toDataURL();
+                a.click();
+            });
+        }
+
+        function shareToWhatsApp() {
+            const msg = encodeURIComponent(`${username} scored ${score}/${quizData.length}!`);
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        }
+        function shareToFacebook() {
+            const msg = encodeURIComponent(`${username} scored ${score}/${quizData.length}!`);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=&quote=${msg}`, '_blank');
+        }
+        function shareToTwitter() {
+            const msg = encodeURIComponent(`${username} scored ${score}/${quizData.length}!`);
+            window.open(`https://twitter.com/intent/tweet?text=${msg}`, '_blank');
+        }
+
+        function viewHistory() {
+            const historyList = document.getElementById("historyList");
+            const history = JSON.parse(localStorage.getItem("quizScores") || "[]");
+            historyList.innerHTML = "";
+            history.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.name}: ${item.score}/${item.total} (${item.percent}%) on ${item.date}`;
+                historyList.appendChild(li);
+            });
+            document.getElementById("historyScreen").classList.remove("hidden");
+        }
+
+        function clearHistory() {
+            localStorage.removeItem("quizScores");
+            viewHistory();
+        }
+    </script>
+</body>
+
+</html>

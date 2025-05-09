@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Land</title>
+    <link rel="shortcut icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+
+    <header>
+           <span>
+                <img src="logo.png" alt="" width="25">
+                <b>QuizLand</b>
+           </span>
+
+           <nav>
+                  <a href=""> <img src="home.png" alt="" width="20"> Home</a>
+                  <a href=""> <img src="about.png" alt="" width="20"> About App</a>
+                  <a href=""> <img src="report.png" alt="" width="20"> Report Issue</a>
+                  <a href=""> <img src="donate.png" alt="" width="20"> Donate</a>
+                  <a href=""> <img src="settings.png" alt="" width="20"> Settings</a>
+                  
+
+                 <label>
+                       <span class="theme-btn">
+                        <small class="theme-ball"></small>
+                    </span>
+                    change theme
+                 </label>
+                  
+           </nav>
+
+
+           <button class="menu-btn"></button>
+    </header>
+    <main>
+
+        <!-- home section -->
+        <section class="banner">
+                 <video src="banner.mp4" loop muted autoplay width="300"></video>
+                 <h1>Welcome to  <b>QuizLand</b> </h1>
+                 <p>...test yourself before being tested.</p>
+
+                 <button class="get-started-btn"> <small></small> <img src="register.png" alt="" width="18"> Get Started</button>
+        </section>
+
+
+        <!-- registration / login section -->
+        <section class="registration">
+               <form class="signup">
+                     <label>
+                            <img src="avatar.png" alt="" width="50" class="preview-img">
+                            <input type="file" class="upload-input">
+                            <b>Upload profile image</b>
+
+                     </label>
+
+                     <input type="text" placeholder="full name" class="full-name" required>
+                     <input type="text" placeholder="username" class="username" required>
+                     <input type="password" placeholder="password"  class="password1" required>
+                     <input type="password" placeholder="confirm password"  class="password2" required>
+                     <span class="agreement">
+                          <input type="checkbox" class="agree-input" required>
+                          <b>Accept Terms & Conditions</b>
+                     </span>
+                     <button>Submit →</button>
+
+                     <p>
+                          Already a member? <button type="button"  class="login-btn2">Login</button>
+                     </p>
+
+               </form>
+
+
+               <!-- login -->
+
+                <form class="login">
+
+                    <label>
+                        <img src="login.png" alt="" width="50" class="preview-img">
+                        
+                    
+                    </label>
+                  
+                    <input type="text" placeholder="username" class="login-username" required>
+                    <input type="password" placeholder="password" class="login-password" required>
+                 
+                    <button>Login →</button>
+                
+                    <p>
+                        New member? <button type="button" class="register-btn2">Register</button>
+                    </p>
+
+                    <p>
+                        forgot password? <button>Reset</button>
+                    </p>
+                
+                </form>
+        </section>
+
+
+        <!-- registration successful -->
+        <section class="success">
+                  
+                     <img src="success.png" alt="" width="150" class="success-img">
+                     <h1>Registration Successful!</h1>
+                     <button class="login_btn">Login Now!</button>
+        </section>
+
+
+        <!-- quiz  category -->
+        <section class="category">
+               <div>
+                    <button class="subject-btn math" id="maths"> <img src="maths.png" alt="" width="40">  Mathematics </button>
+                    <button class="subject-btn english" id="english"> <img src="english.png" alt="" width="40">  English </button>
+             
+               </div>
+
+                <div>
+                    <button class="subject-btn computer" id="computer"> <img src="computer.png" alt="" width="40"> Computer </button>
+                    <button class="subject-btn current_affairs" id="current_affairs"> <img src="current_affairs.png" alt="" width="40"> Current Affairs</button>
+                
+                </div>
+        </section>
+
+        <!-- start section -->
+        <section class="start-section">
+            
+                  
+                 <button class="start">
+                          <img src="start.png" alt="" width="35">   Start
+                 </button>
+
+
+        </section>
+
+        <!-- call to action  -->
+        <section class="call-to-action">
+               <h2>Are you ready?</h2>
+                 <span>
+                        <button class="yes">Yes</button>
+                        <button class="no">No</button>
+                 </span>
+
+        </section>
+
+
+        <!-- question arena -->
+        <section class="question-arena">
+               <h1 class="timer">Time left:<b class="secs"></b></h1>
+              <small class="question-no"></small>
+              <div>
+                      <h2 class="question"></h2>
+              </div>
+
+              <article>
+                         <label>
+                              <input type="radio" value="a" class="option" id="a" name="option">  <b class="option-a-text"></b>
+                         </label>
+
+                        <label>
+                            <input type="radio" value="b" class="option" id="b" name="option">  <b class="option-b-text"></b>
+                        </label>
+
+                        <label>
+                            <input type="radio" value="c" class="option" id="c" name="option"> <b class="option-c-text"></b>
+                        </label>
+
+                        <label>
+                            <input type="radio" value="d" class="option" id="d" name="option">  <b class="option-d-text"></b>
+                        </label>
+              </article>
+
+              <span>
+                    <button class="prev">← Prev</button>
+                    <button class="next">Next →</button>
+              </span>
+        </section>
+     
+            <section class="score-board">
+
+                <img src="avatar.png" alt="" width="100" class="img">
+                <div class="f "><div class="nam">Name:</div> <div class="name">Erioluwa</div></div>
+                <div class="f "><div class="sub">Subject:</div> <div class="subject">Mathematics</div></div>
+                <div class="f "><div class="sco">Score:</div>  <div class="score">100</div></div>
+                <div class="f "><div class="per">Percentage:</div> <div class="percentage">100%</div></div>
+                <div class="f"><div class="rem">Remark:</div> <div class="remark">Execellence👍</div></div>
+                <div class="con">what a great performance good effort keep it up👍</div>
+            </section>
+      
+      <section class="retake-quiz">
+        <div class="retake">Retake Quiz</div>
+        <div class="show">Show result</div>
+      </section>  
+            
+    </main>
+    <footer>
+            <p>
+                  &copy; Copyright <span class="year"></span>. All rights reserved.
+            </p>
+    </footer>
+
+     <script src="questions.js"></script>
+     <script src="handles.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
