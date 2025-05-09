@@ -227,19 +227,31 @@ function get_selected_answer(){
 
 // logic to load question
 let timer = 60
+let clear = null
+let current_question = null
 function load_question(){
          unchecked_options()
         //  display prev button when current question index > 0
 
         if(current_question_index > 0){
                  prev_btn.style.display = "flex"
+clear.disabled = true
         }else{
                   prev_btn.style.display = "none"
+                    clear =  setInterval(function(){
+                timer--
+                secs.innerHTML = timer
+                if(timer <= 0){
+                        retake_quizs()  
+                        clearInterval(clear)  
+                    }
+           }, 1000);
+                    clear.disabled = true
         }
 
           
         //    loading the question
-           let current_question = questions[current_question_index]
+            current_question = questions[current_question_index]
            question_no.innerHTML = current_question.id
            question_display.innerHTML = current_question.question
            option_a_text.innerHTML = current_question.a
@@ -255,14 +267,7 @@ function load_question(){
            if(chosen_answer){
                 document.getElementById(chosen_answer).checked = true
            }
-          clear =  setInterval(function(){
-                timer--
-                secs.innerHTML = timer
-                if(timer <= 0){
-                        retake_quizs()  
-                        clearInterval(clear)  
-                    }
-           }, 1000);
+          
           
 }
 
@@ -271,11 +276,11 @@ function show_next(){
     
             if(current_question_index <( questions.length - 1)){
                    current_question_index ++
-                   
+                   clear.disabled.true
             }else{
                   current_question_index = current_question_index
                   next_btn.innerHTML = "finish"  
-                  
+                  clear.disable = true
                   if(next_btn.innerHTML === "finish"){
                           get_total_score()
                           closeAllSection()
@@ -293,7 +298,7 @@ function show_prev(){
                    
                    current_question_index-- 
                    next_btn.innerHTML = "next"  // set the finish button back to next
-
+                     clear.disable = true
             }else{
                   current_question_index = current_question_index
             }
