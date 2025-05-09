@@ -342,7 +342,7 @@ function get_total_score(){
            if(total_score){
                 img.src= uploaded_image_url
                 fname.innerHTML = login_username
-                subject.innerHTML.category
+                subject.innerHTML = current_question.category
                 score.innerHTML = total_score
                 percentage.innerHTML = 100 + "%"
                 remark.innerHTML = "Execellence"
@@ -350,7 +350,7 @@ function get_total_score(){
            }else if(total_score >= 20){
                 img.src= uploaded_image_url
                 fname.innerHTML = login_username
-                subject.innerHTML.category
+                subject.innerHTML = current_question.category
                 score.innerHTML = total_score
                 percentage.innerHTML = 70 + "%"
                 remark.innerHTML = "very good"
@@ -358,7 +358,7 @@ function get_total_score(){
            }else if(total_score  >= 10){
                 img.src= uploaded_image_url
                 fname.innerHTML = login_username
-                subject.innerHTML.category
+                subject.innerHTML = current_question.category
                 score.innerHTML = total_score
                 percentage.innerHTML = 20 + "%"
                 remark.innerHTML = "good"
@@ -366,7 +366,7 @@ function get_total_score(){
            }else if(total_score >= ""){
                 img.src= uploaded_image_url
                 fname.innerHTML = login_username
-                subject.innerHTML.category
+                subject.innerHTML = current_question.category
                 score.innerHTML = total_score
                 percentage.innerHTML = 0 + "%"
                 remark.innerHTML = "Fail"
