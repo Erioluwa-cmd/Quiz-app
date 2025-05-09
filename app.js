@@ -403,4 +403,9 @@ function get_total_score(){
            
 }
 
-
+ retakes.addEventListener("click", function(){
+                closeAllSection()
+                category_section.style.display = "flex"
+                timer = 60
+                clear.disabled = true
+        })
