@@ -592,7 +592,7 @@
 
         .retake-quiz div{
          width: 100px;
-         padding: 15px 5px;
+         padding: 15px 10px;
          background-color: crimson;
          box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
          font-size: 15px;
@@ -614,6 +614,7 @@
             align-items: center;
             gap: 20px;
             padding-top: 20px;
+            position: relative;
         }
 
         .score-board img{
@@ -633,6 +634,21 @@
             background-color: white;
             padding-left: 30px;
             padding-right: 30px;
+
+        }
+
+        .score-board .retake{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            padding: 15px 10px;
+            background-color: crimson;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            font-size: 15px;
+            color: white;
+            transition: 0.5s;
+            border-radius: 30px;
         }
 
         .score-board .con{
