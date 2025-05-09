@@ -235,10 +235,18 @@ function load_question(){
 
         if(current_question_index > 0){
                  prev_btn.style.display = "flex"
-clear.disabled = true
+ 
+            
         }else{
                   prev_btn.style.display = "none"
-                    
+                    clear =  setInterval(function(){
+                timer--
+                secs.innerHTML = timer
+                if(timer <= 0){
+                        retake_quizs()  
+                        clearInterval(clear)  
+                    }
+           }, 1000);
                     clear.disabled = true
         }
 
@@ -261,14 +269,7 @@ clear.disabled = true
                 document.getElementById(chosen_answer).checked = true
            }
           
-          clear =  setInterval(function(){
-                timer--
-                secs.innerHTML = timer
-                if(timer <= 0){
-                        retake_quizs()  
-                        clearInterval(clear)  
-                    }
-           }, 1000);
+          
 }
 
 
